@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="96" y="96" width="832" height="832" rx="196" ry="196" fill="url(#bg)"/>
+  <rect x="96" y="96" width="832" height="832" rx="196" ry="196" fill="url(#sheen)"/>
+  <!-- stacked-slide motif behind the S -->
+  <g fill="#ffffff" opacity="0.16">
+    <rect x="300" y="318" width="424" height="60" rx="30"/>
+    <rect x="300" y="646" width="424" height="60" rx="30"/>
+  </g>
+  <text x="512" y="556" text-anchor="middle" dominant-baseline="middle"
+        font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="620"
+        fill="#ffffff">S</text>
+</svg>
