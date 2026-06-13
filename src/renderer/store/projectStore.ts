@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { LayoutType, PresentationProject, ProjectFile, Slide } from '../types/presentation'
 import { applyPreset, makeSlide, uid } from '../lib/templates'
 import {
@@ -171,7 +172,9 @@ type ProjectState = {
   applyTemplateToSlides: (templateId: string, ids: string[]) => void
 }
 
-export const useProjectStore = create<ProjectState>((set, get) => ({
+export const useProjectStore = create<ProjectState>()(
+  persist(
+    (set, get) => ({
   project: emptyProject(),
   selectedSlideId: null,
   selectedSlideIds: [],
@@ -733,4 +736,41 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       }
     })
   }
-}))
+    }),
+    {
+      name: 'slideforge-project-v1',
+      partialize: (state) => ({
+        project: state.project,
+        sourceText: state.sourceText,
+        resolution: state.resolution,
+        currentFilePath: state.currentFilePath,
+        dirty: state.dirty
+      }),
+      // Swallow storage errors (e.g. quota exceeded when slides contain large images)
+      storage: {
+        getItem: (key) => {
+          try {
+            const v = localStorage.getItem(key)
+            return v ? (JSON.parse(v) as ReturnType<typeof JSON.parse>) : null
+          } catch {
+            return null
+          }
+        },
+        setItem: (key, value) => {
+          try {
+            localStorage.setItem(key, JSON.stringify(value))
+          } catch {
+            // quota exceeded or private browsing — skip silently
+          }
+        },
+        removeItem: (key) => {
+          try {
+            localStorage.removeItem(key)
+          } catch {
+            // ignore
+          }
+        }
+      }
+    }
+  )
+)
