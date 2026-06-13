@@ -13,7 +13,7 @@ import ProjectSettings from './components/ProjectSettings'
 import PresentMode from './components/PresentMode'
 import { buildSlidesFromText } from './lib/textImport'
 import { buildSlidesFromPdfImages, fileToBytes, pdfToText } from './lib/pdfImport'
-import { docxToText } from './lib/docxImport'
+import { buildSlidesFromDocx } from './lib/docxImport'
 import { serializeProject, parseProjectFile, defaultFileName } from './lib/projectFile'
 import { openImportFile, openProjectFile, saveProjectFile } from './lib/platform'
 
@@ -95,9 +95,17 @@ export default function App(): JSX.Element {
         store.loadSlides(built, fileName, 'pdfImage', '')
         return
       }
+      if (ext === 'docx') {
+        const { slides: built, sourceText } = await buildSlidesFromDocx(bytes, options.preset, options.splitMode, {
+          maxLines: options.maxLines,
+          maxChars: options.maxChars
+        })
+        store.loadSlides(built, fileName, options.preset, sourceText)
+        if (options.editBoundaries && sourceText.trim() !== '') setShowBoundaries(true)
+        return
+      }
       let text: string
       if (ext === 'pdf') text = await pdfToText(bytes)
-      else if (ext === 'docx') text = await docxToText(bytes)
       else text = new TextDecoder('utf-8').decode(bytes)
 
       const built = buildSlidesFromText(text, options.preset, options.splitMode, {
