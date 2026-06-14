@@ -84,6 +84,7 @@ type ProjectState = {
   selectedSlideId: string | null // the "active" slide shown in the editor/preview
   selectedSlideIds: string[] // full multi-selection (always includes the active slide)
   sourceText: string // raw imported text, retained for the boundary editor
+  docxImages: string[] // data URLs for embedded DOCX images; indexed by __IMAGE_N__ markers in sourceText
   templates: StyleTemplate[]
   resolution: { width: number; height: number } // output canvas size (e.g. LED wall)
   currentFilePath: string | null // path of the saved .slideforge file (null if unsaved)
@@ -116,7 +117,8 @@ type ProjectState = {
     slides: Slide[],
     sourceFileName: string,
     preset: LayoutType,
-    sourceText?: string
+    sourceText?: string,
+    docxImages?: string[]
   ) => void
   replaceSlides: (slides: Slide[]) => void
   setSourceText: (text: string) => void
@@ -179,6 +181,7 @@ export const useProjectStore = create<ProjectState>()(
   selectedSlideId: null,
   selectedSlideIds: [],
   sourceText: '',
+  docxImages: [],
   templates: loadTemplates(),
   resolution: { width: 1920, height: 1080 },
   currentFilePath: null,
@@ -261,6 +264,7 @@ export const useProjectStore = create<ProjectState>()(
       selectedSlideId: null,
       selectedSlideIds: [],
       sourceText: '',
+      docxImages: [],
       currentFilePath: null,
       dirty: false,
       importError: null,
@@ -274,7 +278,8 @@ export const useProjectStore = create<ProjectState>()(
       project: { ...state.project, slides: [], sourceFileName: '', updatedAt: nowIso() },
       selectedSlideId: null,
       selectedSlideIds: [],
-      sourceText: ''
+      sourceText: '',
+      docxImages: []
     }))
   },
 
@@ -287,7 +292,7 @@ export const useProjectStore = create<ProjectState>()(
   setImportError: (msg) => set({ importError: msg }),
   setExporting: (v) => set({ isExporting: v }),
 
-  loadSlides: (slides, sourceFileName, preset, sourceText = '') => {
+  loadSlides: (slides, sourceFileName, preset, sourceText = '', docxImages = []) => {
     get().pushSnapshot('import')
     set((state) => {
       const indexed = reindex(slides)
@@ -301,6 +306,7 @@ export const useProjectStore = create<ProjectState>()(
           updatedAt: nowIso()
         },
         sourceText,
+        docxImages,
         selectedSlideId: firstId,
         selectedSlideIds: firstId ? [firstId] : [],
         importError: null,
@@ -335,6 +341,7 @@ export const useProjectStore = create<ProjectState>()(
       return {
         project: { ...data.project, slides },
         sourceText: data.sourceText,
+        docxImages: Array.isArray(data.docxImages) ? data.docxImages : [],
         resolution: data.resolution,
         selectedSlideId: firstId,
         selectedSlideIds: firstId ? [firstId] : [],
@@ -742,6 +749,7 @@ export const useProjectStore = create<ProjectState>()(
       partialize: (state) => ({
         project: state.project,
         sourceText: state.sourceText,
+        docxImages: state.docxImages,
         resolution: state.resolution,
         currentFilePath: state.currentFilePath,
         dirty: state.dirty

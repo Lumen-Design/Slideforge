@@ -6,6 +6,7 @@ export const PROJECT_EXTENSION = 'slideforge'
 type SerializeInput = {
   project: PresentationProject
   sourceText: string
+  docxImages: string[]
   resolution: { width: number; height: number }
 }
 
@@ -15,6 +16,7 @@ export function serializeProject(input: SerializeInput): string {
     version: PROJECT_FILE_VERSION,
     project: input.project,
     sourceText: input.sourceText,
+    docxImages: input.docxImages,
     resolution: input.resolution
   }
   return JSON.stringify(file, null, 2)
@@ -39,6 +41,7 @@ export function parseProjectFile(json: string): ProjectFile {
     version: typeof obj.version === 'number' ? obj.version : PROJECT_FILE_VERSION,
     project: obj.project,
     sourceText: typeof obj.sourceText === 'string' ? obj.sourceText : '',
+    docxImages: Array.isArray((obj as Partial<ProjectFile>).docxImages) ? (obj as Partial<ProjectFile>).docxImages! : [],
     resolution:
       obj.resolution && typeof obj.resolution.width === 'number' && typeof obj.resolution.height === 'number'
         ? obj.resolution

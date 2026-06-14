@@ -96,11 +96,11 @@ export default function App(): JSX.Element {
         return
       }
       if (ext === 'docx') {
-        const { slides: built, sourceText } = await buildSlidesFromDocx(bytes, options.preset, options.splitMode, {
+        const { slides: built, sourceText, docxImages } = await buildSlidesFromDocx(bytes, options.preset, options.splitMode, {
           maxLines: options.maxLines,
           maxChars: options.maxChars
         })
-        store.loadSlides(built, fileName, options.preset, sourceText)
+        store.loadSlides(built, fileName, options.preset, sourceText, docxImages)
         if (options.editBoundaries && sourceText.trim() !== '') setShowBoundaries(true)
         return
       }
@@ -141,7 +141,7 @@ export default function App(): JSX.Element {
   /** Download the current project as a .slideforge file. */
   const saveProject = (): void => {
     const st = useProjectStore.getState()
-    const content = serializeProject({ project: st.project, sourceText: st.sourceText, resolution: st.resolution })
+    const content = serializeProject({ project: st.project, sourceText: st.sourceText, docxImages: st.docxImages, resolution: st.resolution })
     const fileName = defaultFileName(st.project.name)
     saveProjectFile(content, fileName)
     st.markSaved(fileName)

@@ -104,5 +104,6 @@ export type ProjectFile = {
   version: number
   project: PresentationProject
   sourceText: string
+  docxImages: string[]
   resolution: { width: number; height: number }
 }

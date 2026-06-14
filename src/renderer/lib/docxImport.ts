@@ -119,7 +119,7 @@ export async function buildSlidesFromDocx(
   preset: LayoutType,
   splitMode: SplitMode,
   splitOptions: SplitOptions
-): Promise<{ slides: Slide[]; sourceText: string }> {
+): Promise<{ slides: Slide[]; sourceText: string; docxImages: string[] }> {
   let segments: DocxSegment[] = []
   try {
     segments = await extractDocxSegments(bytes)
@@ -131,21 +131,25 @@ export async function buildSlidesFromDocx(
 
   if (!hasImages) {
     const text = await docxToText(bytes)
-    return { slides: buildSlidesFromText(text, preset, splitMode, splitOptions), sourceText: text }
+    return { slides: buildSlidesFromText(text, preset, splitMode, splitOptions), sourceText: text, docxImages: [] }
   }
 
   const allSlides: Slide[] = []
-  const textParts: string[] = []
+  const docxImages: string[] = []
+  const sourceTextParts: string[] = []
 
   for (const seg of segments) {
     if (seg.kind === 'text') {
-      textParts.push(seg.text)
       allSlides.push(...buildSlidesFromText(seg.text, preset, splitMode, splitOptions))
+      sourceTextParts.push(seg.text)
     } else {
+      const imageIdx = docxImages.length
+      docxImages.push(seg.dataUrl)
       allSlides.push(makeSlide('pdfImage', 0, { imageData: seg.dataUrl }))
+      sourceTextParts.push(`__IMAGE_${imageIdx}__`)
     }
   }
 
   allSlides.forEach((s, i) => { s.position = i })
-  return { slides: allSlides, sourceText: textParts.join('\n\n') }
+  return { slides: allSlides, sourceText: sourceTextParts.join('\n\n'), docxImages }
 }
