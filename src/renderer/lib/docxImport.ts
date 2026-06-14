@@ -39,12 +39,15 @@ async function extractDocxSegments(bytes: Uint8Array): Promise<DocxSegment[]> {
   const buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength)
   const zip = await JSZip.loadAsync(buffer)
 
-  // --- Diagnostics (errors show in console regardless of filter level) ---
+  const dbg: Record<string, unknown> = { zipFiles: Object.keys(zip.files) }
+  ;(window as Record<string, unknown>)['__sfDocxDebug'] = dbg
+
   console.error('[SlideForge DOCX] ZIP entries:', Object.keys(zip.files).join(', '))
 
   // --- Build rId → dataUrl from word/_rels/document.xml.rels ---
   const imageMap = new Map<string, string>()
   const relsXml = (await zip.file('word/_rels/document.xml.rels')?.async('text')) ?? ''
+  dbg['relsXml'] = relsXml.slice(0, 600)
   console.error('[SlideForge DOCX] Rels XML (first 600 chars):', relsXml.slice(0, 600))
 
   for (const m of relsXml.matchAll(/<Relationship\b[^>]*\/?>/g)) {
@@ -80,6 +83,8 @@ async function extractDocxSegments(bytes: Uint8Array): Promise<DocxSegment[]> {
     }
   }
 
+  dbg['imageMapSize'] = imageMap.size
+  dbg['imageMapKeys'] = [...imageMap.keys()]
   console.error('[SlideForge DOCX] Total images found:', imageMap.size)
   if (imageMap.size === 0) return []
 
@@ -118,7 +123,8 @@ async function extractDocxSegments(bytes: Uint8Array): Promise<DocxSegment[]> {
   }
 
   flushText()
-  console.error('[SlideForge DOCX] Segments:', segments.map((s) => s.kind === 'image' ? 'IMAGE' : `text:${s.text.slice(0, 30)}`))
+  dbg['segments'] = segments.map((s) => s.kind === 'image' ? 'IMAGE' : `text:${s.text.slice(0, 30)}`)
+  console.error('[SlideForge DOCX] Segments:', dbg['segments'])
   return segments
 }
 
