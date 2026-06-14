@@ -36,11 +36,11 @@ export async function docxToText(bytes: Uint8Array): Promise<string> {
 
 async function extractDocxSegments(bytes: Uint8Array): Promise<DocxSegment[]> {
   // Pass a clean ArrayBuffer — some browsers have issues with Uint8Array views in JSZip
-  const buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength)
+  const buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer
   const zip = await JSZip.loadAsync(buffer)
 
   const dbg: Record<string, unknown> = { zipFiles: Object.keys(zip.files) }
-  ;(window as Record<string, unknown>)['__sfDocxDebug'] = dbg
+  ;(window as unknown as Record<string, unknown>)['__sfDocxDebug'] = dbg
 
   console.error('[SlideForge DOCX] ZIP entries:', Object.keys(zip.files).join(', '))
 
