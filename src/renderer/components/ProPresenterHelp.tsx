@@ -24,14 +24,29 @@ export default function ProPresenterHelp({ open, onClose }: ProPresenterHelpProp
           <li className="flex gap-3">
             <span className="font-mono text-forge-accent">1.</span>
             <span>
-              In ProPresenter, choose{' '}
-              <span className="rounded bg-forge-700 px-1.5 py-0.5 font-medium">File → Import</span>.
+              Click <span className="rounded bg-forge-700 px-1.5 py-0.5 font-medium">Export</span>,
+              choose your formats, then click{' '}
+              <span className="rounded bg-forge-700 px-1.5 py-0.5 font-medium">Download ZIP</span>.
+              A <span className="font-mono text-zinc-200">.zip</span> file will download to your
+              computer.
             </span>
           </li>
           <li className="flex gap-3">
             <span className="font-mono text-forge-accent">2.</span>
             <span>
-              Select{' '}
+              Unzip the file. Inside you'll find folders for{' '}
+              <span className="font-mono text-zinc-200">pptx/</span>,{' '}
+              <span className="font-mono text-zinc-200">pdf/</span>,{' '}
+              <span className="font-mono text-zinc-200">images/</span>, and{' '}
+              <span className="font-mono text-zinc-200">txt/</span> depending on what you exported.
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span className="font-mono text-forge-accent">3.</span>
+            <span>
+              In ProPresenter, choose{' '}
+              <span className="rounded bg-forge-700 px-1.5 py-0.5 font-medium">File → Import</span>{' '}
+              and select{' '}
               <span className="rounded bg-forge-700 px-1.5 py-0.5 font-medium">
                 PowerPoint as Presentation
               </span>{' '}
@@ -39,14 +54,9 @@ export default function ProPresenterHelp({ open, onClose }: ProPresenterHelpProp
               <span className="rounded bg-forge-700 px-1.5 py-0.5 font-medium">
                 PowerPoint as Images
               </span>{' '}
-              for pixel-perfect slides.
-            </span>
-          </li>
-          <li className="flex gap-3">
-            <span className="font-mono text-forge-accent">3.</span>
-            <span>
-              Pick the exported <span className="font-mono text-zinc-200">.pptx</span> file from your
-              project's <span className="font-mono text-zinc-200">pptx/</span> folder.
+              for pixel-perfect slides. Pick the{' '}
+              <span className="font-mono text-zinc-200">.pptx</span> from the{' '}
+              <span className="font-mono text-zinc-200">pptx/</span> folder.
             </span>
           </li>
           <li className="flex gap-3">
@@ -54,14 +64,14 @@ export default function ProPresenterHelp({ open, onClose }: ProPresenterHelpProp
             <span>
               Prefer images? Drag the JPGs from the{' '}
               <span className="font-mono text-zinc-200">images/</span> folder straight onto a
-              playlist.
+              ProPresenter playlist — no import dialog needed.
             </span>
           </li>
         </ol>
 
         <div className="mt-5 rounded-lg border border-forge-700 bg-forge-800 p-3 text-xs text-zinc-400">
-          Tip: “PowerPoint as Images” always looks exactly like the SlideForge preview, since both
-          are rendered from the same engine.
+          Tip: "PowerPoint as Images" always looks exactly like the SlideForge preview, since both
+          are rendered from the same engine. Use it when fonts or precise positioning matter most.
         </div>
 
         <div className="mt-6 flex justify-end">

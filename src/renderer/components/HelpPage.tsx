@@ -45,7 +45,7 @@ export default function HelpPage({ open, onClose }: HelpPageProps): JSX.Element 
           <div>
             <h2 className="text-lg font-semibold text-zinc-100">How to use SlideForge</h2>
             <p className="text-xs text-zinc-500">
-              Turn a TXT or PDF document into ProPresenter-ready slides in four steps.
+              Turn a TXT, PDF or DOCX document into ProPresenter-ready slides in four steps.
             </p>
           </div>
           <button
@@ -62,9 +62,11 @@ export default function HelpPage({ open, onClose }: HelpPageProps): JSX.Element 
           {/* Quick start */}
           <Section title="Quick start" subtitle="The whole workflow, top to bottom.">
             <Step n={1} title="Import a document">
-              Drag a <span className={kbd}>.txt</span> or <span className={kbd}>.pdf</span> onto the
-              drop zone in the center, or click <span className={kbd}>Import</span> in the top bar.
-              SlideForge reads the text and automatically splits it into slides.
+              Drag a <span className={kbd}>.txt</span>, <span className={kbd}>.pdf</span> or{' '}
+              <span className={kbd}>.docx</span> onto the drop zone in the center, or click{' '}
+              <span className={kbd}>Import</span> in the top bar. SlideForge reads the content and
+              automatically splits it into slides. DOCX files with embedded images import those
+              images as full-slide image slides automatically.
             </Step>
             <Step n={2} title="Pick a layout preset">
               In the right panel, choose one of the five presets. The preset restyles every slide so
@@ -75,8 +77,10 @@ export default function HelpPage({ open, onClose }: HelpPageProps): JSX.Element 
               reorder, and use Split / Merge / Duplicate to fine-tune.
             </Step>
             <Step n={4} title="Export">
-              Click <span className={kbd}>Export</span>, choose your formats and an output folder,
-              then open the result and import it into ProPresenter.
+              Click <span className={kbd}>Export</span>, choose your formats, then click{' '}
+              <span className={kbd}>Download ZIP</span>. SlideForge packages everything into a single
+              ZIP file — unzip it and import the <span className="font-mono text-zinc-300">.pptx</span>{' '}
+              into ProPresenter.
             </Step>
           </Section>
 
@@ -96,7 +100,8 @@ export default function HelpPage({ open, onClose }: HelpPageProps): JSX.Element 
                 <span className={kbd}>Import &amp; set start points</span> (or click{' '}
                 <span className={kbd}>Edit slide boundaries</span> in the bottom bar later). Click a
                 line to start a new slide above it, click an existing marker to remove it, or drag a
-                marker to move it.
+                marker to move it. Embedded DOCX images appear as fixed thumbnails in the editor and
+                are always preserved as their own slide.
               </p>
               <p className="mt-2">
                 <span className="font-medium text-zinc-200">PDF page images:</span> set{' '}
@@ -113,18 +118,18 @@ export default function HelpPage({ open, onClose }: HelpPageProps): JSX.Element 
               <li><span className="font-medium text-zinc-200">Lyrics With Black Box</span> — text near the bottom inside a translucent box.</li>
               <li><span className="font-medium text-zinc-200">Scripture</span> — reference at the top, verse body centered below.</li>
               <li><span className="font-medium text-zinc-200">Announcements</span> — large title with smaller supporting body text.</li>
-              <li><span className="font-medium text-zinc-200">PDF Page Image</span> — the full PDF page as a slide image.</li>
+              <li><span className="font-medium text-zinc-200">PDF Page Image</span> — the full PDF page or embedded image as a slide.</li>
             </ul>
           </Section>
 
           {/* Editing */}
           <Section title="Editing slides" subtitle="Everything lives in the right-hand panel.">
             <ul className="space-y-2 text-sm text-zinc-400">
-              <li><span className="font-medium text-zinc-200">Content</span> — edit the title/reference, body, and speaker notes; “Pull next slide into notes” copies the next slide's text.</li>
+              <li><span className="font-medium text-zinc-200">Content</span> — edit the title/reference, body, and speaker notes; "Pull next slide into notes" copies the next slide's text.</li>
               <li><span className="font-medium text-zinc-200">Style</span> — layout, font size, alignment, colors, and a <span className="text-zinc-200">Transparent background</span> toggle for keyable text.</li>
               <li><span className="font-medium text-zinc-200">Fonts</span> — separate fonts for body and title, plus an independent title size (or leave it on Auto).</li>
-              <li><span className="font-medium text-zinc-200">Text Box</span> — a translucent box behind the text on any layout; “Separate box per line” boxes each line instead of the whole block.</li>
-              <li><span className="font-medium text-zinc-200">Slide Actions</span> — Split, Merge with next, Duplicate, Delete, or “Build from lines” (one cumulative slide per line).</li>
+              <li><span className="font-medium text-zinc-200">Text Box</span> — a translucent box behind the text on any layout; "Separate box per line" boxes each line instead of the whole block.</li>
+              <li><span className="font-medium text-zinc-200">Slide Actions</span> — Split, Merge with next, Duplicate, Delete, or "Build from lines" (one cumulative slide per line).</li>
               <li><span className="font-medium text-zinc-200">Reorder</span> — drag thumbnails into any order; <span className={kbd}>+ Add</span> inserts a blank slide.</li>
             </ul>
             <p className="text-xs text-zinc-500">
@@ -157,9 +162,10 @@ export default function HelpPage({ open, onClose }: HelpPageProps): JSX.Element 
           {/* Files & presenting */}
           <Section title="Saving & presenting" subtitle="Keep your work and proof it.">
             <ul className="space-y-2 text-sm text-zinc-400">
-              <li><span className="font-medium text-zinc-200">Save / Open</span> — projects save as a <span className="font-mono text-zinc-300">.slideforge</span> file (<span className={kbd}>⌘S</span> / <span className={kbd}>⌘O</span>). The top bar shows the file name and an amber dot for unsaved changes; the Open ▾ menu lists recent projects.</li>
-              <li><span className="font-medium text-zinc-200">New</span> — <span className={kbd}>⌘⇧N</span> starts a fresh project (prompts if you have unsaved changes).</li>
-              <li><span className="font-medium text-zinc-200">Present</span> — <span className={kbd}>F5</span> (or the Present button) opens a full-screen review; use <span className={kbd}>← →</span> / Space to step, Home/End to jump, <span className={kbd}>Esc</span> to exit.</li>
+              <li><span className="font-medium text-zinc-200">Save / Open</span> — projects save as a <span className="font-mono text-zinc-300">.slideforge</span> file (<span className={kbd}>⌘S</span> downloads it; <span className={kbd}>⌘O</span> opens one). The top bar shows the file name and an amber dot for unsaved changes.</li>
+              <li><span className="font-medium text-zinc-200">Auto-restore</span> — your work is automatically kept in the browser so a page refresh won't lose it.</li>
+              <li><span className="font-medium text-zinc-200">New</span> — the <span className={kbd}>New</span> button starts a fresh project (prompts if you have unsaved changes).</li>
+              <li><span className="font-medium text-zinc-200">Present</span> — the <span className={kbd}>Present</span> button opens a full-screen preview; use <span className={kbd}>← →</span> or Space to step, <span className={kbd}>Esc</span> to exit.</li>
             </ul>
           </Section>
 
@@ -168,16 +174,21 @@ export default function HelpPage({ open, onClose }: HelpPageProps): JSX.Element 
             <div className="text-sm leading-relaxed text-zinc-400">
               <p>
                 Set a <span className="font-medium text-zinc-200">project name</span> (it becomes the
-                root folder), tick any combination of{' '}
+                ZIP folder name), tick any combination of{' '}
                 <span className={kbd}>.pptx</span> · <span className={kbd}>.pdf</span> ·{' '}
                 <span className={kbd}>JPG images</span> · <span className={kbd}>.txt</span>, then
-                choose an output location. SlideForge writes:
+                click <span className={kbd}>Download ZIP</span>. The ZIP contains:
               </p>
-              <pre className="mt-3 overflow-x-auto rounded-lg border border-forge-700 bg-forge-950 bg-black/40 p-3 font-mono text-xs text-zinc-400">{`ProjectName/
+              <pre className="mt-3 overflow-x-auto rounded-lg border border-forge-700 bg-forge-950 bg-black/40 p-3 font-mono text-xs text-zinc-400">{`ProjectName.zip
   pptx/     PowerPoint deck (editable)
   pdf/      one page per slide
   images/   one JPG per slide
   txt/      plain text of all slides`}</pre>
+              <p className="mt-2">
+                Unzip the file, then bring the contents into ProPresenter — see the{' '}
+                <span className="font-medium text-zinc-200">Import into ProPresenter</span> guide in
+                the bottom bar.
+              </p>
             </div>
           </Section>
 
@@ -186,14 +197,16 @@ export default function HelpPage({ open, onClose }: HelpPageProps): JSX.Element 
             <ul className="space-y-2 text-sm text-zinc-400">
               <li>
                 <span className="font-medium text-zinc-200">Editable:</span>{' '}
-                <span className={kbd}>File → Import → PowerPoint as Presentation</span> and choose the
-                exported <span className="font-mono text-zinc-300">.pptx</span>.
+                Unzip the export, then in ProPresenter choose{' '}
+                <span className={kbd}>File → Import → PowerPoint as Presentation</span> and pick the{' '}
+                <span className="font-mono text-zinc-300">.pptx</span> from the{' '}
+                <span className="font-mono text-zinc-300">pptx/</span> folder.
               </li>
               <li>
                 <span className="font-medium text-zinc-200">Pixel-perfect:</span>{' '}
-                <span className={kbd}>File → Import → PowerPoint as Images</span>, or drag the JPGs
-                from the <span className="font-mono text-zinc-300">images/</span> folder onto a
-                playlist.
+                Choose <span className={kbd}>File → Import → PowerPoint as Images</span>, or drag the
+                JPGs from the <span className="font-mono text-zinc-300">images/</span> folder straight
+                onto a ProPresenter playlist.
               </li>
             </ul>
           </Section>
